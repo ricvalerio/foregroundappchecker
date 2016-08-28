@@ -4,6 +4,26 @@ Foreground application checker for android.
 
 This library tries to provide an easy way to get the foreground application package name. It uses different techniques, adequate to the device's android version.
 
+Download
+--------
+
+```groovy
+apply plugin: 'com.android.application'
+
+repositories {
+    // ...
+    maven { url 'https://dl.bintray.com/rvalerio/maven' }
+}
+
+dependencies {
+    // ...
+    compile 'com.rvalerio:fgchecker:1.0'
+}
+```
+
+
+Usage
+-----
 To use this library on Lollipop or above, you need to request permission for UsageStats.
 
 In it's simplest form, and to get the package name of the foreground application, you can do like so:
@@ -84,3 +104,21 @@ and last but not least:
 ```
 
 This library is distributed under the Apache 2.0 license.
+
+License
+-------
+
+    Copyright 2016 Ricardo Valério
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
