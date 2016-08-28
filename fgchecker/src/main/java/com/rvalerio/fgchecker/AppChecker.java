@@ -1,6 +1,8 @@
 package com.rvalerio.fgchecker;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 
 import com.rvalerio.fgchecker.detectors.Detector;
 import com.rvalerio.fgchecker.detectors.LollipopDetector;
@@ -13,23 +15,26 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 
-public class AppChecker {
-    private ScheduledExecutorService service;
-    private Runnable runnable;
 
-    private static final int DEFAULT_TIMEOUT = 1000;
-    private int timeout = DEFAULT_TIMEOUT;
-    private Listener defaultListener;
-    private Map<String, Listener> listeners;
+public class AppChecker {
+    ScheduledExecutorService service;
+    Runnable runnable;
+
+    static final int DEFAULT_TIMEOUT = 1000;
+    int timeout = DEFAULT_TIMEOUT;
+    Listener defaultListener;
+    Map<String, Listener> listeners;
+    Detector detector;
+    Handler handler;
 
     public interface Listener {
         void onForeground(String process);
     }
 
-    Detector detector;
 
     public AppChecker() {
         listeners = new HashMap<>();
+        handler = new Handler(Looper.getMainLooper());
         if(Utils.postLollipop())
             detector = new LollipopDetector();
         else
@@ -74,18 +79,28 @@ public class AppChecker {
     }
 
     private void getForegroundAppAndNotify(Context context) {
-        String foregroundApp = getForegroundApp(context);
+        final String foregroundApp = getForegroundApp(context);
 
         if(foregroundApp != null) {
             for (String packageName : listeners.keySet()) {
                 if (packageName.toLowerCase().equals(foregroundApp)) {
-                    listeners.get(packageName).onForeground(packageName);
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            listeners.get(foregroundApp).onForeground(foregroundApp);
+                        }
+                    });
                     return;
                 }
             }
-            if(defaultListener != null) {
-                defaultListener.onForeground(foregroundApp);
-            }
+        }
+        if(defaultListener != null) {
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    defaultListener.onForeground(foregroundApp);
+                }
+            });
         }
     }
 
