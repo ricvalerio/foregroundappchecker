@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Foreground App Checker</string>
+    <string name="button_usage_permission">Request permission</string>
+    <string name="button_service_start">Start service</string>
+    <string name="usage_permission_granted">Application has usage stats permission.</string>
+    <string name="usage_permission_explanation">Press to request usage stats permission. The service will then become available.</string>
+    <string name="stop_service">Press to stop service</string>
+    <string name="service_started">Service started</string>
 </resources>

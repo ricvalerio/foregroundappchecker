@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.rvalerio.foregroundappchecker.MainActivity">
+
+    <TextView
+        android:id="@+id/permission_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/usage_permission_explanation"
+        />
+
+    <Button
+        android:id="@+id/usage_permission"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="@string/button_usage_permission"
+        />
+
+    <Button
+        android:id="@+id/service_toggle"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="@string/button_service_start"
+        />
+
+</LinearLayout>

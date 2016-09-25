@@ -22,7 +22,7 @@ public class PreLollipopDetector implements Detector {
 
         String foregroundApp = null;
         if(foregroundAppPackageInfo != null)
-            foregroundAppPackageInfo.applicationInfo.loadLabel(pm).toString();
+            foregroundApp = foregroundAppPackageInfo.applicationInfo.packageName;
 
         return foregroundApp;
     }
