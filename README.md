@@ -24,7 +24,11 @@ dependencies {
 
 Usage
 -----
-To use this library on Lollipop or above, you need to request permission for UsageStats.
+To use this library, you will need to request permissions in order to support different versions.
+
+To support ICS until Lollipop, you need to request android.permission.GET_TASKS permission.
+
+To support Lollipop or above, you need to request android.permission.PACKAGE_USAGE_STATS permission.
 
 In it's simplest form, and to get the package name of the foreground application, you can do like so:
 
@@ -99,6 +103,7 @@ boolean hasUsageStatsPermission(Context context) {
 and last but not least:
 
 ```xml
+<uses-permission android:name="android.permission.GET_TASKS" />
 <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
     tools:ignore="ProtectedPermissions" />
 ```
