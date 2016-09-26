@@ -17,7 +17,7 @@ repositories {
 
 dependencies {
     // ...
-    compile 'com.rvalerio:fgchecker:1.0'
+    compile 'com.rvalerio:fgchecker:1.0.1'
 }
 ```
 
