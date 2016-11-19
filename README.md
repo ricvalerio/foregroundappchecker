@@ -34,7 +34,7 @@ In it's simplest form, and to get the package name of the foreground application
 
 ```android
 AppChecker appChecker = new AppChecker();
-String packageName = appChecker.getForegroundApp();
+String packageName = appChecker.getForegroundApp(context);
 ```
 
 If you would like to have this being checked on an interval, you can do like so:
