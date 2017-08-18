@@ -18,6 +18,7 @@ public class PreLollipopDetector implements Detector {
             foregroundAppPackageInfo = pm.getPackageInfo(foregroundTaskPackageName, 0);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
+            return null;
         }
 
         String foregroundApp = null;
