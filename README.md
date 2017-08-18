@@ -17,7 +17,7 @@ repositories {
 
 dependencies {
     // ...
-    compile 'com.rvalerio:fgchecker:1.0.1'
+    compile 'com.rvalerio:fgchecker:1.1.0'
 }
 ```
 
@@ -42,7 +42,7 @@ If you would like to have this being checked on an interval, you can do like so:
 ```android
 AppChecker appChecker = new AppChecker();
 appChecker
-    .other(new AppChecker.Listener() {
+    .whenAny(new AppChecker.Listener() {
         @Override
         public void onForeground(String packageName) {
             // do something
@@ -60,25 +60,32 @@ appChecker
     .when("com.other.app", new AppChecker.Listener() {
         @Override
         public void onForeground(String packageName) {
-            // do something
+            // do something when com.other.app is in the foreground
         }
     )
     .when("com.my.app", new AppChecker.Listener() {
         @Override
         public void onForeground(String packageName) {
-            // do something
+            // do something when com.my.app is in the foreground
         }
     )
-    .other(new AppChecker.Listener() {
+    .whenOther(new AppChecker.Listener() {
         @Override
         public void onForeground(String packageName) {
-            // do something
+            // do something when none of the registered packages are in the foreground
+        }
+    )
+    .whenAny(new AppChecker.Listener() {
+        @Override
+        public void onForeground(String packageName) {
+            // do something everytime a scan for foreground app is run
         }
     )
     .timeout(1000)
     .start(this);
 ```
 
+Callbacks are done on the UI thread. Keep in mind that callbacks are done every time there is a scan. Currently it does not do callbacks only when the foreground app changes.
 For your convenience, I provide here code to request usage stats permission:
 
 ```android
@@ -100,13 +107,18 @@ boolean hasUsageStatsPermission(Context context) {
 }
 ```
 
-and last but not least:
+and finally:
 
 ```xml
 <uses-permission android:name="android.permission.GET_TASKS" />
 <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
     tools:ignore="ProtectedPermissions" />
 ```
+
+Upcoming features
+-----
+- Add option to only callback when there is a package name change
+
 
 This library is distributed under the Apache 2.0 license.
 
