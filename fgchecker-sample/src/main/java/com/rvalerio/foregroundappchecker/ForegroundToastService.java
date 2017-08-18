@@ -64,7 +64,7 @@ public class ForegroundToastService extends Service {
                         Toast.makeText(getBaseContext(), "Our app is in the foreground.", Toast.LENGTH_SHORT).show();
                     }
                 })
-                .other(new AppChecker.Listener() {
+                .whenOther(new AppChecker.Listener() {
                     @Override
                     public void onForeground(String packageName) {
                         Toast.makeText(getBaseContext(), "Foreground: " + packageName, Toast.LENGTH_SHORT).show();
