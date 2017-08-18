@@ -1,9 +1,20 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
 
 ext {
     PUBLISH_GROUP_ID = 'com.rvalerio'
     PUBLISH_ARTIFACT_ID = 'fgchecker'
     PUBLISH_VERSION = '1.1.0'
+}
+
+publish {
+    groupId = 'com.rvalerio'
+    artifactId = 'fgchecker'
+    publishVersion = '1.1.0'
+    desc = 'Foreground application detection library for android.'
+    licences = ['Apache-2.0']
+    uploadName = 'foregroundappchecker'
+    website = 'https://github.com/ricvalerio/foregroundappchecker.git'
 }
 
 android {
