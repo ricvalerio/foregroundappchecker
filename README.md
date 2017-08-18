@@ -86,6 +86,7 @@ appChecker
 ```
 
 Callbacks are done on the UI thread. Keep in mind that callbacks are done every time there is a scan. Currently it does not do callbacks only when the foreground app changes.
+
 For your convenience, I provide here code to request usage stats permission:
 
 ```android
