@@ -17,12 +17,13 @@ import java.util.concurrent.TimeUnit;
 
 
 public class AppChecker {
+    static final int DEFAULT_TIMEOUT = 1000;
+
+    int timeout = DEFAULT_TIMEOUT;
     ScheduledExecutorService service;
     Runnable runnable;
-
-    static final int DEFAULT_TIMEOUT = 1000;
-    int timeout = DEFAULT_TIMEOUT;
-    Listener defaultListener;
+    Listener unregisteredPackageListener;
+    Listener anyPackageListener;
     Map<String, Listener> listeners;
     Detector detector;
     Handler handler;
@@ -51,21 +52,33 @@ public class AppChecker {
         return this;
     }
 
+    @Deprecated
     public AppChecker other(Listener listener) {
-        defaultListener = listener;
+        return whenOther(listener);
+    }
+
+    public AppChecker whenOther(Listener listener) {
+        unregisteredPackageListener = listener;
+        return this;
+    }
+
+    public AppChecker whenAny(Listener listener) {
+        anyPackageListener = listener;
         return this;
     }
 
     public void start(Context context) {
-        service = new ScheduledThreadPoolExecutor(1);
         runnable = createRunnable(context.getApplicationContext());
+        service = new ScheduledThreadPoolExecutor(1);
         service.schedule(runnable, timeout, TimeUnit.MILLISECONDS);
     }
 
     public void stop() {
-        service.shutdownNow();
+        if(service != null) {
+            service.shutdownNow();
+            service = null;
+        }
         runnable = null;
-        service = null;
     }
 
     private Runnable createRunnable(final Context context) {
@@ -80,28 +93,31 @@ public class AppChecker {
 
     private void getForegroundAppAndNotify(Context context) {
         final String foregroundApp = getForegroundApp(context);
-
+        boolean foundRegisteredPackageListener = false;
         if(foregroundApp != null) {
             for (String packageName : listeners.keySet()) {
-                if (packageName.toLowerCase().equals(foregroundApp)) {
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            listeners.get(foregroundApp).onForeground(foregroundApp);
-                        }
-                    });
-                    return;
+                if (packageName.equalsIgnoreCase(foregroundApp)) {
+                    foundRegisteredPackageListener = true;
+                    callListener(listeners.get(foregroundApp), foregroundApp);
                 }
             }
+
+            if(!foundRegisteredPackageListener && unregisteredPackageListener != null) {
+                callListener(unregisteredPackageListener, foregroundApp);
+            }
         }
-        if(defaultListener != null) {
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    defaultListener.onForeground(foregroundApp);
-                }
-            });
+        if(anyPackageListener != null) {
+            callListener(anyPackageListener, foregroundApp);
         }
+    }
+
+    void callListener(final Listener listener, final String packageName) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                listener.onForeground(packageName);
+            }
+        });
     }
 
     public String getForegroundApp(Context context) {
