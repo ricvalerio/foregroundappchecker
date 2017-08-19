@@ -1,8 +1,8 @@
 # Foreground App Checker for android
 
-Foreground application checker for android.
-
 This library tries to provide an easy way to get the foreground application package name. It uses different techniques, adequate to the device's android version.
+
+[ ![Download](https://api.bintray.com/packages/rvalerio/maven/foregroundappchecker/images/download.svg) ](https://bintray.com/rvalerio/maven/foregroundappchecker/_latestVersion)
 
 Download
 --------
