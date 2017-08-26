@@ -22,7 +22,7 @@ dependencies {
 ```
 
 
-Usage
+Setup
 -----
 To use this library, you will need to request permissions in order to support different versions.
 
@@ -56,6 +56,10 @@ boolean hasUsageStatsPermission(Context context) {
     return granted;
 }
 ```
+
+
+Usage
+-----
 
 In it's simplest form, and to get the package name of the foreground application, you can do like so:
 
