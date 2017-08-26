@@ -30,6 +30,33 @@ To support ICS until Lollipop, you need to request android.permission.GET_TASKS 
 
 To support Lollipop or above, you need to request android.permission.PACKAGE_USAGE_STATS permission.
 
+```xml
+<uses-permission android:name="android.permission.GET_TASKS" />
+<uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
+    tools:ignore="ProtectedPermissions" />
+```
+
+For your convenience, I provide here code to request usage stats permission:
+
+```android
+    
+void requestUsageStatsPermission() {
+    if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP 
+        && !hasUsageStatsPermission(this)) {
+        startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
+    }
+}
+
+@TargetApi(Build.VERSION_CODES.KITKAT)
+boolean hasUsageStatsPermission(Context context) {
+    AppOpsManager appOps = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
+    int mode = appOps.checkOpNoThrow("android:get_usage_stats",
+            android.os.Process.myUid(), context.getPackageName());
+    boolean granted = mode == AppOpsManager.MODE_ALLOWED;
+    return granted;
+}
+```
+
 In it's simplest form, and to get the package name of the foreground application, you can do like so:
 
 ```android
@@ -86,35 +113,6 @@ appChecker
 ```
 
 Callbacks are done on the UI thread. Keep in mind that callbacks are done every time there is a scan. Currently it does not do callbacks only when the foreground app changes.
-
-For your convenience, I provide here code to request usage stats permission:
-
-```android
-    
-void requestUsageStatsPermission() {
-    if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP 
-        && !hasUsageStatsPermission(this)) {
-        startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
-    }
-}
-
-@TargetApi(Build.VERSION_CODES.KITKAT)
-boolean hasUsageStatsPermission(Context context) {
-    AppOpsManager appOps = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
-    int mode = appOps.checkOpNoThrow("android:get_usage_stats",
-            android.os.Process.myUid(), context.getPackageName());
-    boolean granted = mode == AppOpsManager.MODE_ALLOWED;
-    return granted;
-}
-```
-
-and finally:
-
-```xml
-<uses-permission android:name="android.permission.GET_TASKS" />
-<uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
-    tools:ignore="ProtectedPermissions" />
-```
 
 Upcoming features
 -----
